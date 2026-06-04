@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+:root {
+  /* Tollmans Brand Colors */
+  --color-black:   #000000;
+  --color-yellow:  #F5E000;
+  --color-yellow-hover: #e8d400;
+  --color-bg:      #F2F2F2;
+  --color-surface: #FFFFFF;
+  --color-border:  #E0E0E0;
+  --color-border-dark: #C8C8C8;
+
+  /* Text */
+  --color-text:           #1A1A1A;
+  --color-text-secondary: #666666;
+  --color-text-muted:     #999999;
+
+  /* Status */
+  --color-draft:  #888888;
+  --color-quote:  #E67E00;
+  --color-order:  #1A7A3C;
+
+  /* Semantic */
+  --color-error:   #D32F2F;
+  --color-warning: #E67E00;
+  --color-success: #1A7A3C;
+  --color-discount: #1A7A3C;
+
+  /* Source 29 */
+  --color-29: #7B2FBE;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  direction: rtl;
+  font-family: 'Heebo', 'Arial', sans-serif;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Heebo', 'Arial', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Form fields ── */
+.field-input {
+  width: 100%;
+  border: 1.5px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-family: 'Heebo', sans-serif;
+  background: white;
+  color: var(--color-text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.field-input:focus {
+  outline: none;
+  border-color: var(--color-black);
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.08);
+}
+.field-input:disabled {
+  background: var(--color-bg);
+  cursor: default;
+  color: var(--color-text-secondary);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-border-dark); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #999; }
+
+/* ── Utility ── */
+.badge-29 {
+  display: inline-flex;
+  align-items: center;
+  font-family: monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: #EDE7F6;
+  color: #5E35B1;
+  border: 1px solid #D1C4E9;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
