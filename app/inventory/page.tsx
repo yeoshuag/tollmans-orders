@@ -1,11 +1,13 @@
 'use client'
 import { useState, useMemo } from 'react'
-import { MOCK_ITEMS, CATEGORIES, SUB_CATEGORIES, BRANDS, getNetPrice, type StockItem } from '@/mock/items'
+import { CATEGORIES, SUB_CATEGORIES, BRANDS, getNetPrice, type StockItem } from '@/mock/items'
 import { WAREHOUSES } from '@/mock/warehouses'
 import { useCartStore, type CartItem } from '@/store/cart'
+import { useItems } from '@/lib/useItems'
 
 export default function InventoryPage() {
   const addItem = useCartStore((s) => s.addItem)
+  const { items: allItems, loading, error } = useItems()
 
   const [search, setSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('')
@@ -32,7 +34,7 @@ export default function InventoryPage() {
   }
 
   const filtered = useMemo(() => {
-    return MOCK_ITEMS.filter((item) => {
+    return allItems.filter((item) => {
       const s = search.toLowerCase()
       if (s && !item.code.toLowerCase().includes(s) && !item.name.toLowerCase().includes(s) && !item.model.toLowerCase().includes(s)) return false
       if (categoryFilter && item.category !== categoryFilter) return false
@@ -115,6 +117,18 @@ export default function InventoryPage() {
           </div>
         )}
       </div>
+
+      {/* Loading / Error */}
+      {loading && (
+        <div className="bg-black text-[#F5E000] text-sm font-bold px-4 py-2 rounded-lg mb-4 flex items-center gap-2">
+          <span className="animate-spin">⟳</span> טוען נתונים מPriority...
+        </div>
+      )}
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-2 rounded-lg mb-4">
+          ⚠ שגיאה בחיבור לPriority — מוצגים נתוני demo. ({error})
+        </div>
+      )}
 
       {/* Two-column layout */}
       <div className="flex gap-4 items-start">
