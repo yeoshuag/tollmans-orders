@@ -3,7 +3,7 @@
  * כל קריאה לPriority עוברת דרך פונקציות אלו בלבד
  */
 
-const BASE_URL = process.env.PRIORITY_BASE_URL!
+const BASE_URL = (process.env.PRIORITY_BASE_URL ?? '').replace(/\/$/, '') // הסר סלש אחרון
 const USER     = process.env.PRIORITY_API_USER!
 const PASSWORD = process.env.PRIORITY_API_PASSWORD!
 
