@@ -47,9 +47,13 @@ export async function GET() {
       }, { status: 200 }) // מחזיר 200 לנו כדי שהדפדפן יציג
     }
   } catch (err: any) {
+    const cause = err.cause
     return NextResponse.json({
       status: 'network_error',
       message: `שגיאת רשת: ${err.message}`,
+      cause: cause ? String(cause) : undefined,
+      causeCode: cause?.code ?? undefined,
+      causeMessage: cause?.message ?? undefined,
       url: testUrl,
     })
   }
