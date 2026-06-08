@@ -1,4 +1,11 @@
 import { NextResponse } from 'next/server'
+import { fetch as undiciFetch, Agent } from 'undici'
+
+const tlsAgent = new Agent({
+  connect: { rejectUnauthorized: false },
+  connectTimeout: 30_000,
+  headersTimeout: 30_000,
+})
 
 /**
  * GET /api/priority/test
@@ -20,10 +27,10 @@ export async function GET() {
   const auth = 'Basic ' + Buffer.from(`${user}:${pass}`).toString('base64')
 
   try {
-    const res = await fetch(testUrl, {
+    const res = await undiciFetch(testUrl, {
       headers: { Authorization: auth, Accept: 'application/json' },
-      cache: 'no-store',
-    })
+      dispatcher: tlsAgent,
+    } as any)
 
     const text = await res.text()
     let body: any = null

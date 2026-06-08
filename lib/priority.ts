@@ -1,11 +1,23 @@
 /**
  * Priority REST API client
  * כל קריאה לPriority עוברת דרך פונקציות אלו בלבד
+ * משתמש ב-undici עם agent מותאם כדי לעקוף בעיות SSL ארגוניות
  */
+import { fetch as undiciFetch, Agent } from 'undici'
 
 const BASE_URL = (process.env.PRIORITY_BASE_URL ?? '').replace(/\/$/, '') // הסר סלש אחרון
 const USER     = process.env.PRIORITY_API_USER!
 const PASSWORD = process.env.PRIORITY_API_PASSWORD!
+
+// Agent עם rejectUnauthorized:false לשרתי Priority עם תעודות SSL פרטיות
+const tlsAgent = new Agent({
+  connect: {
+    rejectUnauthorized: false,
+  },
+  headersTimeout: 30_000,
+  bodyTimeout:    30_000,
+  connectTimeout: 30_000,
+})
 
 function authHeader(): string {
   return 'Basic ' + Buffer.from(`${USER}:${PASSWORD}`).toString('base64')
@@ -17,19 +29,19 @@ async function priorityFetch(endpoint: string, params?: Record<string, string>) 
     Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v))
   }
 
-  const res = await fetch(url.toString(), {
+  const res = await undiciFetch(url.toString(), {
     headers: {
       Authorization: authHeader(),
       Accept: 'application/json',
     },
-    next: { revalidate: 60 }, // cache 60 שניות
-  })
+    dispatcher: tlsAgent,
+  } as any)
 
   if (!res.ok) {
     throw new Error(`Priority API error: ${res.status} ${res.statusText} — ${endpoint}`)
   }
 
-  const data = await res.json()
+  const data = await res.json() as any
   return data.value ?? data
 }
 
