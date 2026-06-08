@@ -3,6 +3,8 @@ import './globals.css'
 import Navbar from '@/components/Navbar'
 import LoginModal from '@/components/LoginModal'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'טולמנס — מערכת הזמנות',
   description: 'מערכת הזמנות והצעות מחיר טולמנס',
